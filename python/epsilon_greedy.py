@@ -60,6 +60,7 @@ class epsilon_greedy(gr.sync_block):
         goodput = np.log2(configuration.constellationN) * (float(configuration.outercodingrate)) * (float(configuration.innercodingrate)) * payload_valid
         print "header_valid =", header_valid
         print "payload_valid =", payload_valid
+        print "this is print"
         self.database.write_configuration(configuration,
                                           header_valid,
                                           payload_valid,
