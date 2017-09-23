@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<block>
+  <name>Epsilon Greedy Engine</name>
+  <key>cognition_epsilon_greedy</key>
+  <category>[cognition]</category>
+  <import>import cognition</import>
+  <make>cognition.epsilon_greedy()</make>
+  <sink>
+    <name>packet_info</name>
+    <type>message</type>
+  </sink>
+  <source>
+    <name>configuration</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+</block>

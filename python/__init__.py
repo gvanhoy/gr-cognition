@@ -31,4 +31,5 @@ except ImportError:
 	pass
 
 # import any pure python here
+from epsilon_greedy import epsilon_greedy
 #
