@@ -48,22 +48,52 @@ class epsilon_greedy(gr.sync_block):
         self.message_port_register_out(pmt.intern('configuration'))
         self.num_packets = 0
 
+
+#handler gets called whenever new data comes in
+
     def handler(self, packet_info):
         self.num_packets += 1
+
+        #pmt.dict_ref(dict, key, not_found)
+        #if the key exists in the dict, it returns the associated value, else it returns not found
+
+        #pmt.intern does string_to_symbol
+
+        #pmt.to_python converts pmt to python object
+
+        #(think) fetching data about the code from the dictionary of pmt objects, converting them to python objects
         modulation = pmt.to_python(pmt.dict_ref(packet_info, pmt.intern("modulation"), pmt.PMT_NIL))
         inner_code = pmt.to_python(pmt.dict_ref(packet_info, pmt.intern("inner_code"), pmt.PMT_NIL))
         outer_code = pmt.to_python(pmt.dict_ref(packet_info, pmt.intern("outer_code"), pmt.PMT_NIL))
         header_valid = pmt.to_python(pmt.dict_ref(packet_info, pmt.intern("header_valid"), pmt.PMT_NIL))
         payload_valid = pmt.to_python(pmt.dict_ref(packet_info, pmt.intern("payload_valid"), pmt.PMT_NIL))
+
+
+
         config_id = modulation*7*8 + inner_code*8 + outer_code + 1
+
+        #(Q) what is this ConfigurationMap doing?
+        #(think) creating a ConfiguratonMap object
+        #(Q) what is goodput? Some collection of data from the ConfigurationMap?
         configuration = ConfigurationMap(modulation, inner_code, outer_code, config_id)
         goodput = np.log2(configuration.constellationN) * (float(configuration.outercodingrate)) * (float(configuration.innercodingrate)) * payload_valid
+        
         print "header_valid =", header_valid
         print "payload_valid =", payload_valid
+
+		#here: drop or mess packets before feeding to database
         self.database.write_configuration(configuration,
                                           header_valid,
                                           payload_valid,
                                           goodput)
+
+        """
+		what is PMT?
+		-Polymorphic Type
+
+
+        """
+
 
         ce_configuration = self.engine.epsilon_greedy(self.num_packets, .1)
         if ce_configuration is not None:
@@ -287,6 +317,7 @@ class ConfigurationMap:
             self.constellationN = 64
             self.modulationtype = 'QAM'
 
+        #(Q) what are these inner codes for?
         if inner_code == 0:
             self.innercodingrate = float(1)
             self.innercodingtype = 'None'
@@ -309,15 +340,25 @@ class ConfigurationMap:
             self.innercodingrate = float(6) / float(7)
             self.innercodingtype = 'Conv'
 
+
+        #(think) outer codes are used for error correction. 
+        #(Q) how are ECCs chosen chosen? 
         if outer_code == 0:
             self.outercodingrate = float(1)
             self.outercodingtype = 'None'
         elif outer_code == 1:
             self.outercodingrate = float(12) / float(24)
             self.outercodingtype = 'Golay'
+        
+        
+        #elif outer_code == 2:
+        #    self.outercodingrate = float(4) / float(8)
+        #    self.outercodingtype = 'Reed-Solomon'
         elif outer_code == 2:
             self.outercodingrate = float(4) / float(8)
-            self.outercodingtype = 'Reed-Solomon'
+            self.outercodingtype = 'Hamming'
+
+
         elif outer_code == 3:
             self.outercodingrate = float(4) / float(7)
             self.outercodingtype = 'Hamming'

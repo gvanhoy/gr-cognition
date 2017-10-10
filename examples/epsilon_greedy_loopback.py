@@ -4,7 +4,7 @@
 # GNU Radio Python Flow Graph
 # Title: Epsilon Greedy Loopback
 # Author: Hamed Asadi, Garrett Vanhoy
-# Generated: Fri Sep 22 22:48:47 2017
+# Generated: Mon Oct  9 21:31:08 2017
 ##################################################
 
 if __name__ == '__main__':
@@ -59,6 +59,7 @@ class epsilon_greedy_loopback(gr.top_block, Qt.QWidget):
 
         self.settings = Qt.QSettings("GNU Radio", "epsilon_greedy_loopback")
         self.restoreGeometry(self.settings.value("geometry").toByteArray())
+
 
         ##################################################
         # Variables
@@ -116,6 +117,8 @@ class epsilon_greedy_loopback(gr.top_block, Qt.QWidget):
         self.blocks_throttle_0 = blocks.throttle(gr.sizeof_gr_complex*1, samp_rate,True)
         self.blocks_random_pdu_0 = blocks.random_pdu(50, 50, chr(0xFF), 2)
         self.blocks_message_strobe_0 = blocks.message_strobe(pmt.intern("TEST"), 125)
+
+
 
         ##################################################
         # Connections
