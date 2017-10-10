@@ -78,6 +78,7 @@ class epsilon_greedy(gr.sync_block):
         configuration = ConfigurationMap(modulation, inner_code, outer_code, config_id)
         goodput = np.log2(configuration.constellationN) * (float(configuration.outercodingrate)) * (float(configuration.innercodingrate)) * payload_valid
         
+        print "test"
         print "header_valid =", header_valid
         print "payload_valid =", payload_valid
 
@@ -350,7 +351,7 @@ class ConfigurationMap:
             self.outercodingrate = float(12) / float(24)
             self.outercodingtype = 'Golay'
         
-        
+
         #elif outer_code == 2:
         #    self.outercodingrate = float(4) / float(8)
         #    self.outercodingtype = 'Reed-Solomon'
