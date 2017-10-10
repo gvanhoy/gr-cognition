@@ -352,12 +352,12 @@ class ConfigurationMap:
             self.outercodingtype = 'Golay'
         
 
-        #elif outer_code == 2:
-        #    self.outercodingrate = float(4) / float(8)
-        #    self.outercodingtype = 'Reed-Solomon'
         elif outer_code == 2:
             self.outercodingrate = float(4) / float(8)
-            self.outercodingtype = 'Hamming'
+            self.outercodingtype = 'Reed-Solomon'
+        #elif outer_code == 2:
+        #    self.outercodingrate = float(4) / float(8)
+        #    self.outercodingtype = 'Hamming'
 
 
         elif outer_code == 3:
