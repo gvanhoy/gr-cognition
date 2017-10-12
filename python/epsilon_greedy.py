@@ -30,8 +30,10 @@ CONFIDENCE = 0.9
 PSR_Threshold = 0.8
 
 
+
 class epsilon_greedy(gr.sync_block):
     """
+    test for working from vanhoy's laptop VM
     docstring for block epsilon_greedy
     """
     def __init__(self):
